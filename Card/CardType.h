@@ -1,5 +1,6 @@
 #pragma once
 
+// Basic card types in the game
 enum class CardType {
     CANNON,
     MERMAID,
