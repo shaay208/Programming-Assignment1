@@ -1,14 +1,15 @@
 #pragma once
 
+#include "../Card/Card.h"
 #include <vector>
 #include <memory>
-#include "../Card/Card.h"
+#include <algorithm>
 
-// Class to manage a collection of cards using shared pointers
+// Manages a collection of cards using shared pointers
 class CardCollection {
 private:
     // Stores the collection of cards
-    std::vector<std::shared_ptr<Card>> cards;
+    std::vector<CardPtr> cards;
 
 public:
     // Default constructor
@@ -17,33 +18,51 @@ public:
     // Default destructor
     ~CardCollection() = default;
 
-    // Adds a single card to the collection
-    void addCard(std::shared_ptr<Card> card);
+    // Constructs a CardCollection using a range of iterators
+    template<typename Iterator>
+    CardCollection(Iterator begin, Iterator end) {
+        cards.assign(begin, end);
+    }
 
-    // Adds all cards from another CardCollection to this collection
+    // Adds a single card to the collection
+    void addCard(const CardPtr& card);
+
+    // Adds all cards from another CardCollection to this one
     void addCards(const CardCollection& other);
 
     // Removes a specific card from the collection
-    void removeCard(const std::shared_ptr<Card>& card);
+    void removeCard(const CardPtr& card);
 
-    // Checks if the collection is empty
+    // Clears all cards from the collection
+    void clear();
+
+    // Checks whether the collection is empty
     bool isEmpty() const;
 
     // Returns the number of cards in the collection
     size_t size() const;
 
-    // Clears all cards from the collection
-    void clear();
+    // Returns a reference to the card list (modifiable)
+    std::vector<CardPtr>& getCards();
 
-    // Returns a reference to the vector of cards (modifiable)
-    std::vector<std::shared_ptr<Card>>& getCards();
+    // Returns a const reference to the card list (read-only)
+    const std::vector<CardPtr>& getCards() const;
 
-    // Returns a const reference to the vector of cards (read-only)
-    const std::vector<std::shared_ptr<Card>>& getCards() const;
+    // Finds and returns the first card matching the given suit/type
+    // Returns nullptr if none found
+    CardPtr findOneCardOfSuit(CardType suit) const;
 
-    // Finds and returns a card of the specified suit/type, if any exists
-    std::shared_ptr<Card> findOneCardOfSuit(CardType suit) const;
-
-    // Prints information about all cards in the collection
+    // Prints a string representation of all cards in the collection
     void print() const;
+
+    // Iterator support
+    using iterator = std::vector<CardPtr>::iterator;
+    using const_iterator = std::vector<CardPtr>::const_iterator;
+
+    iterator begin() { return cards.begin(); }
+    iterator end() { return cards.end(); }
+    const_iterator begin() const { return cards.begin(); }
+    const_iterator end() const { return cards.end(); }
+    const_iterator cbegin() const { return cards.cbegin(); }
+    const_iterator cend() const { return cards.cend(); }
 };
