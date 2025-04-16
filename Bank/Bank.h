@@ -19,7 +19,7 @@ public:
     Bank();
 
     // Adds a single card to the bank
-    void addCard(std::shared_ptr<Card> card);
+    void addCard(const std::shared_ptr<Card>& card);
 
     // Adds multiple cards to the bank from another collection
     void addCards(const CardCollection& newCards);
