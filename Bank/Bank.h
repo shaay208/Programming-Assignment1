@@ -1,47 +1,47 @@
 #pragma once
-
-// Include the CardCollection class to manage a group of cards
-#include <memory>
-#include <vector>
+#include "../Card/Card.h"
 #include "../CardCollection/CardCollection.h"
 
-// Represents a player's bank where scored cards are stored
+// The Bank class manages a collection of cards and calculates a score based on them
 class Bank {
 private:
-    // Collection of cards stored in the bank
+    // Stores the cards in the bank
     CardCollection cards;
 
-    // Total score calculated from the cards
+    // The score calculated from the highest value card of each type
     int score;
 
+    // Recalculates the score based on cards in bank
+    void calculateScore();
+
 public:
-    // Constructor initializes the bank and score
+    // Constructor
     Bank();
 
     // Adds a single card to the bank
-    void addCard(const std::shared_ptr<Card>& card);
+    void addCard(const CardPtr& card);
 
-    // Adds multiple cards to the bank from another collection
+    // Adds multiple cards to the bank
     void addCards(const CardCollection& newCards);
-
-    // Returns the current score of the bank
-    int getScore() const;
-
-    // Calculates the total score based on the current cards
-    void calculateScore();
 
     // Clears all cards and resets the score
     void clear();
 
-    // Returns true if the bank has no cards
+    // Checks if the bank has no cards
     bool isEmpty() const;
 
-    // Prints all cards in the bank
-    void print() const;
+    // Returns a const reference to the card collection in the bank
+    const CardCollection& getBank() const;
 
-    // Provides modifiable access to the bank's card collection
+    // Returns the current score of the bank
+    int getScore() const;
+
+    // Returns a modifiable reference to the cards
     CardCollection& getCards();
 
-    // Provides read-only access to the bank's card collection
+    // Returns a const reference to the cards
     const CardCollection& getCards() const;
+
+    // Prints the contents and score of the bank
+    void print() const;
 };
