@@ -4,26 +4,28 @@
 #include <random>
 
 // Adds a single card to the collection
-void CardCollection::addCard(std::shared_ptr<Card> card) {
+void CardCollection::addCard(const CardPtr& card) {
     cards.push_back(card);
 }
 
 // Adds all cards from another CardCollection to this collection
 void CardCollection::addCards(const CardCollection& other) {
-    cards.insert(cards.end(), other.cards.begin(), other.cards.end());
+    const auto& otherCards = other.getCards();
+    cards.insert(cards.end(), otherCards.begin(), otherCards.end());
 }
 
 // Removes a specific card from the collection if it exists
-void CardCollection::removeCard(const std::shared_ptr<Card>& card) {
-    // Locate the card
+void CardCollection::removeCard(const CardPtr& card) {
+    // Locate the card in the collection
     auto it = std::find(cards.begin(), cards.end(), card);
+
+    // If found, remove it
     if (it != cards.end()) {
-        // Remove it from the collection
         cards.erase(it);
     }
 }
 
-// Returns true if there are no cards in the collection
+// Returns true if the collection has no cards
 bool CardCollection::isEmpty() const {
     return cards.empty();
 }
@@ -33,34 +35,41 @@ size_t CardCollection::size() const {
     return cards.size();
 }
 
-// Removes all cards from the collection
+// Clears all cards from the collection
 void CardCollection::clear() {
     cards.clear();
 }
 
-// Provides modifiable access to the vector of cards
+// Provides modifiable access to the card vector
 std::vector<std::shared_ptr<Card>>& CardCollection::getCards() {
     return cards;
 }
 
-// Provides read-only access to the vector of cards
+// Provides read-only access to the card vector
 const std::vector<std::shared_ptr<Card>>& CardCollection::getCards() const {
     return cards;
 }
 
-// Finds and returns the first card that matches the given suit/type
+// Finds and returns the first card that matches the specified suit/type
 // Returns nullptr if no matching card is found
-std::shared_ptr<Card> CardCollection::findOneCardOfSuit(CardType suit) const {
+CardPtr CardCollection::findOneCardOfSuit(CardType suit) const {
     for (const auto& card : cards) {
-        if (card->getType() == suit) {
+        if (card && card->getType() == suit) {
             return card;
         }
     }
     return nullptr;
 }
 
-// Prints a string representation of all cards in the collection
+// Prints the string representations of all cards in the collection
 void CardCollection::print() const {
+    // Print "Empty" if no cards are present
+    if (isEmpty()) {
+        std::cout << "Empty" << std::endl;
+        return;
+    }
+
+    // Print each card in the collection
     for (const auto& card : cards) {
         std::cout << card->str() << " ";
     }
