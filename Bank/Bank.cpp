@@ -3,81 +3,88 @@
 #include <map>
 #include <algorithm>
 
-// Constructor initializes the bank and score to zero
+// Constructor initializes score to 0
 Bank::Bank() : score(0) {}
 
-void Bank::addCard(const std::shared_ptr<Card>& card) {
-    // Add the card to the collection
+// Adds a card to the bank and recalculates the score
+void Bank::addCard(const CardPtr& card) {
     cards.addCard(card);
-
-    // Recalculate the total score
     calculateScore();
 }
 
+// Adds multiple cards to the bank and recalculates the score
 void Bank::addCards(const CardCollection& newCards) {
-    // Add all cards from the new collection to the bank
     cards.addCards(newCards);
-
-    // Recalculate the total score
     calculateScore();
 }
 
+// Returns the current score of the bank
 int Bank::getScore() const {
-    // Returns the total score of the bank
     return score;
 }
 
+// Recalculates the score based on the highest card value of each type
 void Bank::calculateScore() {
-    // Resets the score to zero before recalculating
     score = 0;
-
-    // Map to store the highest value card of each type
     std::map<CardType, int> highestValues;
 
-    // Iterate through all cards in the collection
-    for (const auto& card : cards.getCards()) {
+    // Get the list of cards currently in the bank
+    const auto& cardList = cards.getCards();
+
+    // Determine the highest value card for each card type
+    for (const auto& card : cardList) {
         CardType type = card->getType();
         int value = card->getValue();
 
-        // Update the highest value for this card type
-        if (highestValues.find(type) == highestValues.end() || value > highestValues[type]) {
+        // Store the highest value found for each card type
+        if (highestValues.find(type) == highestValues.end() ||
+            value > highestValues[type]) {
             highestValues[type] = value;
         }
     }
 
-    // Sum up the highest values across all card types
+    // Sum the highest values from each card type to compute the score
     for (const auto& pair : highestValues) {
         score += pair.second;
     }
 }
 
+// Clears all cards from the bank and resets the score
 void Bank::clear() {
-    // Clears all cards from the bank
     cards.clear();
-
-    // Resets the score to zero
     score = 0;
 }
 
+// Returns true if the bank has no cards
 bool Bank::isEmpty() const {
-    // Checks if the bank is empty
     return cards.isEmpty();
 }
 
-void Bank::print() const {
-    // Prints the current score of the bank
-    std::cout << "Bank Score: " << score << std::endl;
-
-    // Prints all cards in the bank
-    cards.print();
-}
-
-CardCollection& Bank::getCards() {
-    // Returns a modifiable reference to the card collection
+const CardCollection& Bank::getBank() const {
     return cards;
 }
 
+// Prints all cards in the bank and the current score
+void Bank::print() const {
+    if (isEmpty()) {
+        std::cout << "Bank is empty" << std::endl;
+        return;
+    }
+
+    const auto& cardList = cards.getCards();
+    for (const auto& card : cardList) {
+        std::cout << card->str() << " ";
+    }
+    std::cout << std::endl;
+    std::cout << "Score: " << score << std::endl;
+}
+
+// Returns a modifiable reference to the card collection
+CardCollection& Bank::getCards() {
+    return cards;
+}
+
+// Returns a const reference to the card collection
 const CardCollection& Bank::getCards() const {
-    // Returns a read-only reference to the card collection
     return cards;
 }
