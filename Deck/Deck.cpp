@@ -70,7 +70,18 @@ void Deck::reset() {
     // Remove all existing cards from the deck
     clear();
 
-    // TO DO: implement add cards of each type with values 1-13
+    // Add cards of each type with values 1-13
+    for (int value = 1; value <= 13; ++value) {
+        getCards().push_back(std::make_shared<Cannon>(value));
+        getCards().push_back(std::make_shared<Chest>(value));
+        getCards().push_back(std::make_shared<Key>(value));
+        getCards().push_back(std::make_shared<Sword>(value));
+        getCards().push_back(std::make_shared<Hook>(value));
+        getCards().push_back(std::make_shared<Map>(value));
+        getCards().push_back(std::make_shared<Mermaid>(value));
+        getCards().push_back(std::make_shared<Oracle>(value));
+        getCards().push_back(std::make_shared<Kraken>(value));
+    }
 
     // Shuffle the deck after resetting
     shuffle();
