@@ -2,24 +2,21 @@
 #include <iostream>
 #include <algorithm>
 
-// Constructor: Initializes the play area with a fixed number of piles
-PlayArea::PlayArea() {
-    playPiles.resize(NUM_PILES);
+// Adds a card to the play area if the provided card pointer is not null
+void PlayArea::addCard(const std::shared_ptr<Card>& card) {
+    if (card) {
+        cards.addCard(card);
+    }
 }
 
-// Checks whether a card can be legally played on a given pile
-bool PlayArea::canPlayOnPile(int pileIndex, std::shared_ptr<Card> card) const {
-    if (pileIndex < 0 || pileIndex >= NUM_PILES) {
-        return false;
-    }
+// Removes a card from the play area if it exists
+void PlayArea::removeCard(const std::shared_ptr<Card>& card) {
+    cards.removeCard(card);
+}
 
-    const auto& pile = playPiles[pileIndex];
-    if (pile.isEmpty()) {
-        return true;  // Can play on empty pile
-    }
-
-    // Delegate the check to the card's logic
-    return card->canPlayOn(pile.getCards().back());
+// Clears all cards from the play area
+void PlayArea::clear() {
+    cards.clear();
 }
 
 // Adds a card to the specified pile if the index is valid

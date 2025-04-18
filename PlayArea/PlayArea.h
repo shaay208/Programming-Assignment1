@@ -9,12 +9,23 @@ class PlayArea {
 private:
     static const int NUM_PILES = 4;  // Number of piles in the play area
     std::vector<CardCollection> playPiles;  // Each pile holds a collection of cards
+    CardCollection cards;
 
 public:
     // Constructor
     PlayArea();
 
     // Card management
+    // Adds a card to the play area, given a shared pointer to the Card object
+    void addCard(const std::shared_ptr<Card>& card);
+
+    // Removes a card from the play area
+    void removeCard(const std::shared_ptr<Card>& card);
+
+    // Clears all cards from the play area
+    void clear();
+
+
 
     // Adds a card to the first suitable pile (empty or matching suit)
     void addCard(std::shared_ptr<Card> card);
