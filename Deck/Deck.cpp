@@ -11,78 +11,99 @@
 #include "../CardTypes/Oracle/Oracle.h"
 #include "../CardTypes/Key/Key.h"
 
-#include <random>
 #include <algorithm>
-#include <memory>
+#include <random>
 #include <chrono>
+#include <iostream>
 
-// Constructor: Initializes the deck by resetting it
-Deck::Deck() {
-    reset();
-}
-
-// Draws the top card from the deck and removes it
-CardPtr Deck::drawCard() {
-    // If the deck is empty, return null
-    if (isEmpty()) {
-        return nullptr;
+void Deck::initialize() {
+    // clearing the deck before initializing
+    cards.clear();
+    
+    // Add Cannon cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Cannon>(i));
     }
-
-    // Get the last card in the deck
-    CardPtr drawnCard = getCards().back();
-
-    // Remove the card from the deck
-    getCards().pop_back();
-
-    return drawnCard;
-}
-
-// Returns the top card from the deck without removing it
-CardPtr Deck::peek() const {
-    // If the deck is empty, return null
-    if (isEmpty()) {
-        return nullptr;
+    
+    // Add Chest cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Chest>(i));
     }
-
-    // Return the last card without removing it
-    return getCards().back();
-}
-
-// Helper function to shuffle a card collection
-void shuffleDeck(CardCollection& cards) {
-    // Copy the card collection to a new collection for shuffling
-    CardCollection shuffleDeck{ cards.begin(), cards.end() };
-
-    // Shuffle the copied collection using a random generator
-    std::shuffle(shuffleDeck.begin(), shuffleDeck.end(), std::mt19937{ std::random_device{}() });
-
-    // Copy the shuffled cards back into the original collection
-    std::copy(shuffleDeck.begin(), shuffleDeck.end(), cards.begin());
-}
-
-// Shuffles the deck
-void Deck::shuffle() {
-    shuffleDeck(*this);
-}
-
-// Resets the deck to its original state with all cards
-void Deck::reset() {
-    // Remove all existing cards from the deck
-    clear();
-
-    // Add cards of each type with values 1-13
-    for (int value = 1; value <= 13; ++value) {
-        getCards().push_back(std::make_shared<Cannon>(value));
-        getCards().push_back(std::make_shared<Chest>(value));
-        getCards().push_back(std::make_shared<Key>(value));
-        getCards().push_back(std::make_shared<Sword>(value));
-        getCards().push_back(std::make_shared<Hook>(value));
-        getCards().push_back(std::make_shared<Map>(value));
-        getCards().push_back(std::make_shared<Mermaid>(value));
-        getCards().push_back(std::make_shared<Oracle>(value));
-        getCards().push_back(std::make_shared<Kraken>(value));
+    
+    // Add Key cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Key>(i));
     }
-
-    // Shuffle the deck after resetting
+    
+    // Add Sword cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Sword>(i));
+    }
+    
+    // Add Hook cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Hook>(i));
+    }
+    
+    // Add Oracle cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Oracle>(i));
+    }
+    
+    // Add Map cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Map>(i));
+    }
+    
+    // Add Mermaid cards (values 4-9)
+    for (int i = 4; i <= 9; ++i) {
+        cards.push_back(std::make_shared<Mermaid>(i));
+    }
+    
+    // Add Kraken cards (values 2-7)
+    for (int i = 2; i <= 7; ++i) {
+        cards.push_back(std::make_shared<Kraken>(i));
+    }
+    // shuffle the deck after initializing
     shuffle();
+}
+
+// Shuffles the deck using a random number generator seeded with current time
+void Deck::shuffle() {
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(cards.begin(), cards.end(), std::default_random_engine(seed));
+}
+
+// Draws and removes the top card from the deck
+// Returns nullptr if deck is empty
+std::shared_ptr<Card> Deck::drawCard() {
+    if (cards.empty()) {
+        return nullptr;
+    }
+    
+    auto card = cards.back();
+    cards.pop_back();
+    return card;
+}
+
+// Returns the top card without removing it from deck
+// Returns nullptr if deck is empty
+std::shared_ptr<Card> Deck::peekTop() const {
+    if (cards.empty()) {
+        return nullptr;
+    }
+    return cards.back();
+}
+
+// Prints all cards in the deck
+// Displays "Deck is empty" if there are no cards
+void Deck::print() const {
+    if (cards.empty()) {
+        std::cout << "        Deck is empty\n";
+        return;
+    }
+    
+    for (const auto& card : cards) {
+        std::cout << "        " << card->str() << "\n";
+    }
 }
