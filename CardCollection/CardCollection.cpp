@@ -4,8 +4,11 @@
 #include <random>
 
 // Adds a single card to the collection
+
 void CardCollection::addCard(const CardPtr& card) {
-    cards.push_back(card);
+    if (card) {
+        cards.push_back(card);
+    }
 }
 
 // Adds all cards from another CardCollection to this collection
@@ -40,25 +43,23 @@ void CardCollection::clear() {
     cards.clear();
 }
 
-// Provides modifiable access to the card vector
-std::vector<std::shared_ptr<Card>>& CardCollection::getCards() {
-    return cards;
-}
-
-// Provides read-only access to the card vector
-const std::vector<std::shared_ptr<Card>>& CardCollection::getCards() const {
-    return cards;
+// Retrieves a card at the specified index or nullptr if out of bounds
+CardPtr CardCollection::getCard(size_t index) const {
+    if (index < cards.size()) {
+        return cards[index];
+    }
+    return nullptr;
 }
 
 // Finds and returns the first card that matches the specified suit/type
 // Returns nullptr if no matching card is found
 CardPtr CardCollection::findOneCardOfSuit(CardType suit) const {
-    for (const auto& card : cards) {
-        if (card && card->getType() == suit) {
-            return card;
-        }
-    }
-    return nullptr;
+    auto it = std::find_if(cards.begin(), cards.end(),
+        [suit](const CardPtr& card) {
+            return card->getType() == suit;
+        });
+    
+    return (it != cards.end()) ? *it : nullptr;
 }
 
 // Prints the string representations of all cards in the collection

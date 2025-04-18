@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-git add .gitignore
-git commit -m "Initial commit: Add .gitignore file"#include <memory>
+#include <memory>
 #include <vector>
 #include "CardType.h"
 

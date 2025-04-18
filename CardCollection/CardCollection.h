@@ -5,6 +5,8 @@
 #include <memory>
 #include <algorithm>
 
+using CardPtr = std::shared_ptr<Card>;
+
 // Manages a collection of cards using shared pointers
 class CardCollection {
 private:
@@ -42,11 +44,11 @@ public:
     // Returns the number of cards in the collection
     size_t size() const;
 
-    // Returns a reference to the card list (modifiable)
-    std::vector<CardPtr>& getCards();
+    // Card retrieval
+    CardPtr getCard(size_t index) const;
 
-    // Returns a const reference to the card list (read-only)
-    const std::vector<CardPtr>& getCards() const;
+    // Returns a const reference to the card pointers
+    const std::vector<CardPtr>& getCards() const { return cards; }
 
     // Finds and returns the first card matching the given suit/type
     // Returns nullptr if none found
