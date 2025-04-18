@@ -44,6 +44,9 @@ public:
 
     // Returns a const reference to the card pointers
     const std::vector<CardPtr>& getCards() const { return cards; }
+    
+    // Returns the collection of cards that can be modified
+    std::vector<CardPtr>& getCards() { return cards; }
 
     // Finds and returns the first card matching the given suit/type
     // Returns nullptr if none found
