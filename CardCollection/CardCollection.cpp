@@ -65,14 +65,13 @@ CardPtr CardCollection::findOneCardOfSuit(CardType suit) const {
 // Prints the string representations of all cards in the collection
 void CardCollection::print() const {
     // Print "Empty" if no cards are present
-    if (isEmpty()) {
-        std::cout << "Empty" << std::endl;
+    if (cards.empty()) {
+        std::cout << "        (empty)\n";
         return;
     }
 
     // Print each card in the collection
-    for (const auto& card : cards) {
-        std::cout << card->str() << " ";
+     for (const auto& card : cards) {
+        std::cout << "        " << card->str() << "\n";
     }
-    std::cout << std::endl;
 }

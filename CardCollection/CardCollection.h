@@ -20,11 +20,6 @@ public:
     // Default destructor
     ~CardCollection() = default;
 
-    // Constructs a CardCollection using a range of iterators
-    template<typename Iterator>
-    CardCollection(Iterator begin, Iterator end) {
-        cards.assign(begin, end);
-    }
 
     // Adds a single card to the collection
     void addCard(const CardPtr& card);
@@ -57,14 +52,18 @@ public:
     // Prints a string representation of all cards in the collection
     void print() const;
 
-    // Iterator support
-    using iterator = std::vector<CardPtr>::iterator;
-    using const_iterator = std::vector<CardPtr>::const_iterator;
-
-    iterator begin() { return cards.begin(); }
-    iterator end() { return cards.end(); }
-    const_iterator begin() const { return cards.begin(); }
-    const_iterator end() const { return cards.end(); }
-    const_iterator cbegin() const { return cards.cbegin(); }
-    const_iterator cend() const { return cards.cend(); }
+    
+    // Iterator access
+    // Returns iterator to the beginning of the card collection
+    auto begin() { return cards.begin(); }
+    // Returns iterator to the end of the card collection
+    auto end() { return cards.end(); }
+    // Returns const iterator to the beginning of the card collection
+    auto begin() const { return cards.begin(); }
+    // Returns const iterator to the end of the card collection
+    auto end() const { return cards.end(); }
+    // Returns const iterator to the beginning of the card collection (explicit const version)
+    auto cbegin() const { return cards.cbegin(); }
+    // Returns const iterator to the end of the card collection (explicit const version)
+    auto cend() const { return cards.cend(); }
 };
