@@ -1,63 +1,40 @@
 #pragma once
 #include <string>
+git add .gitignore
+git commit -m "Initial commit: Add .gitignore file"#include <memory>
 #include <vector>
-#include <memory>
 #include "CardType.h"
 
 // Forward declarations
 class Game;
 class Player;
+class Bank;
 class Card;
 
-// Define the smart pointer type alias before using it
+// Define CardPtr after forward declaration
 using CardPtr = std::shared_ptr<Card>;
-using CardCollection = std::vector<CardPtr>;
-
-enum class CardType {
-    CANNON,
-    CHEST,
-    KEY,
-    SWORD,
-    HOOK,
-    ORACLE,
-    MAP,
-    MERMAID,
-    KRAKEN
-};
 
 class Card {
 protected:
-    // Type of the card (made const as it shouldn't change)
-    const CardType type; 
-    // Value of the card (made const as it shouldn't change)
-    const int value;      
+    CardType type;
+    int value;
 
 public:
-    // Constructor
     Card(CardType type, int value);
-
-    // Virtual destructor for proper cleanup of derived classes
     virtual ~Card() = default;
 
-    // Getters - all marked const as they don't modify state
-    CardType getType() const { return type; }
-    int getValue() const { return value; }
-
-    // Card abilities - all marked const except play which modifies game state
-    virtual void executeAbility(Game& game, Player& player) = 0;
-    virtual std::string getAbilityDescription() const = 0;
-
-    // Utility methods - all marked const as they don't modify state
-    virtual int getScoreValue() const;
-    virtual std::string str() const = 0;
-
-    // Game mechanics
+    // Core functionality
     virtual void play(Game& game, Player& player);
-    virtual void willAddToBank(Game& game, Player& player) const;
+    virtual void willAddToBank(Game& game, Player& player);
+    virtual void willAddToBank(Bank& bank) {}
+    virtual void executeAbility(Game& game, Player& player) = 0;
+    virtual void displayAbilityDescription() const = 0;
+    virtual std::string str() const;
 
-    // Check if this card would cause a bust in the given play area
+    // Accessors
+    CardType getType() const;
+    int getValue() const;
+
+    // Bust checking
     bool wouldCauseBust(const std::vector<CardPtr>& playArea) const;
-
-    // Check if this card can be played on top of another card
-    virtual bool canPlayOn(const CardPtr& other) const = 0;
 };
