@@ -60,6 +60,7 @@ bool Bank::isEmpty() const {
     return cards.isEmpty();
 }
 
+// Returns a const reference to the cards in the bank
 const CardCollection& Bank::getBank() const {
     return cards;
 }
@@ -87,4 +88,9 @@ CardCollection& Bank::getCards() {
 // Returns a const reference to the card collection
 const CardCollection& Bank::getCards() const {
     return cards;
+}
+
+void Bank::removeCard(const CardPtr& card) {
+    cards.removeCard(card);  // Use CardCollection's removeCard method
+    calculateScore();  // Recalculate score after removing card
 }

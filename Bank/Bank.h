@@ -11,9 +11,6 @@ private:
     // The score calculated from the highest value card of each type
     int score;
 
-    // Recalculates the score based on cards in bank
-    void calculateScore();
-
 public:
     // Constructor
     Bank();
@@ -40,8 +37,14 @@ public:
     CardCollection& getCards();
 
     // Returns a const reference to the cards
-    const CardCollection& getCards() const;
+    const CardCollection& getCards() const;const CardCollection& getCards() const;
 
     // Prints the contents and score of the bank
     void print() const;
+
+    // Removes a specific card from the bank
+    void removeCard(const CardPtr& card);
+
+    // Recalculates the score based on cards in bank
+    void calculateScore();
 };
