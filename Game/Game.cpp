@@ -177,3 +177,7 @@ Player& Game::getOtherPlayer() {
     return currentPlayerIndex == 0 ? player2 : player1;
 }
 
+// Draws a card from the discard pile and returns it
+std::shared_ptr<Card> Game::drawFromDiscardPile() {
+    return discardPile.drawCard();
+}

@@ -139,4 +139,7 @@ public:
 
     // getting the other player
     Player& getOtherPlayer();
+
+    // Draws and returns the top card from the discard pile
+    std::shared_ptr<Card> drawFromDiscardPile();
 };

@@ -15,41 +15,58 @@ std::string Map::str() const {
 
 // Executes the special ability of the Map card
 void Map::executeAbility(Game& game, Player& player) {
-    // If the discard pile is empty, there's nothing to draw
-    if (game.getDiscardPile().isEmpty()) {
-        std::cout << "The discard pile is empty. No cards to draw." << std::endl;
+    // Draw 3 cards from discard pile
+    std::vector<CardPtr> drawnCards;
+    
+    std::cout << "\nDrawing up to 3 cards from discard pile:\n";
+    
+    for (int i = 0; i < 3; ++i) {
+        auto card = game.drawFromDiscardPile();
+        if (!card) {
+            std::cout << "        No more cards in discard pile.\n";
+            break;
+        }
+        drawnCards.push_back(card);
+        std::cout << i << ": " << card->str() << "\n";
+    }
+    
+    if (drawnCards.empty()) {
+        std::cout << "        No cards available in discard pile.\n";
         return;
     }
-
-    // Display the current discard pile
-    std::cout << "Current discard pile:" << std::endl;
-    game.getDiscardPile().print();
-
-    // Ask the player how many cards they want to draw (1-3)
-    int numCards;
-    std::cout << "Which card do you pick? ";
-    std::cin >> numCards;
-
-    // Clamp the number between 1 and 3
-    numCards = std::clamp(numCards, 1, 3);
-
-    // Draw the requested number of cards from the discard pile
-    auto drawnCards = game.getDiscardPile().drawCards(numCards);
-
-    // Add each drawn card to the player's hand
-    for (const auto& card : drawnCards) {
-        player.addCardToHand(card);
+    
+    // Let player choose one card to play
+    std::cout << "\nChoose a card to play (enter number): ";
+    int choice;
+    std::cin >> choice;
+    std::cin.ignore(); // Clear newline
+    
+    if (choice >= 0 && choice < static_cast<int>(drawnCards.size())) {
+        auto chosenCard = drawnCards[choice];
+        
+        // Return unchosen cards to discard pile
+        for (size_t i = 0; i < drawnCards.size(); ++i) {
+            if (i != static_cast<size_t>(choice)) {
+                game.addToDiscardPile(drawnCards[i]);
+            }
+        }
+        
+        // Play the chosen card
+        if (player.wouldBust(chosenCard)) {
+            std::cout << "BUST! " << player.getName() << " loses all cards in play area.\n";
+            auto playAreaCards = player.getPlayArea().getCards();
+            for (const auto& card : playAreaCards) {
+                game.addToDiscardPile(card);
+            }
+            player.getPlayArea().clear(); // Use getPlayArea().clear() instead of clearPlayArea()
+            game.addToDiscardPile(chosenCard);
+        } else {
+            player.playCard(chosenCard, game); // Add game parameter to playCard
+        }
     }
-
-    std::cout << "Drew " << drawnCards.size() << " cards from the discard pile." << std::endl;
 }
 
 // Describes the ability of the Map card
-std::string Map::getAbilityDescription() const {
-    return "Draw 3 cards from discard pile and pick one to add to the play area.";
-}
-
-// Determines if this Map card can be played on another Map card of lower value
-bool Map::canPlayOn(const CardPtr& other) const {
-    return other && other->getType() == CardType::MAP && other->getValue() < getValue();
+void Map::displayAbilityDescription() const {
+    std::cout << "Draw 3 cards from the discard pile and play one.\n";
 }
