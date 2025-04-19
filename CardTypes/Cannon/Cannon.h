@@ -9,6 +9,9 @@ public:
     // Constructor: creates a Cannon card with a specified value
     Cannon(int value);
 
+    // Explicit constructor to prevent implicit conversions
+    explicit Cannon(int value);
+
     // Returns a string representation of the Cannon card
     std::string str() const override;
 
@@ -16,5 +19,5 @@ public:
     void executeAbility(Game& game, Player& player) override;
 
     // Returns a description of the Cannon's ability
-    std::string getAbilityDescription() const override;
+    void displayAbilityDescription() const override;
 };

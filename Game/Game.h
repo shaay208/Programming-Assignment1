@@ -7,6 +7,7 @@
 #include "../Deck/Deck.h"
 #include "../DiscardPile/DiscardPile.h"
 #include "../PlayArea/PlayArea.h"
+#include "../Player/Player.h"
 
 // The Game class manages the state, flow, and logic of the game.
 class Game {
@@ -14,8 +15,14 @@ private:
     // A vector of shared pointers to Player objects representing all players in the game
     std::vector<std::shared_ptr<Player>> players;
 
-    // The deck of cards used in the game
+    // The deck of cards used in the game, containing all the playing cards for this game session
     Deck deck;
+
+    // The first player object representing player one in the game
+    Player player1;
+    // The second player object representing player two in the game
+    Player player2;
+
 
     // The discard pile where discarded cards are stored
     DiscardPile discardPile;
@@ -125,4 +132,10 @@ public:
 
     // Method to display the winner of the game
     void displayWinner() const;
+
+    // Method to add a card to the discard pile
+    void addToDiscardPile(std::shared_ptr<Card> card);
+
+    // getting the other player
+    Player& getOtherPlayer();
 };

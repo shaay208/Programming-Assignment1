@@ -167,3 +167,18 @@ int Game::getCurrentRound() const { return currentRound; }
 
 // Getter for the current turn
 int Game::getCurrentTurn() const { return currentTurn; }
+
+
+// Adds the given card to the discard pile if the card pointer is valid
+void Game::addToDiscardPile(std::shared_ptr<Card> card) {
+    if (card) {  // Check if the card pointer is not null
+        discardPile.addCard(card);  // Add the card to the discard pile
+    }
+}
+
+// Returns a reference to the other player in a two-player game
+// If current player is player1 (index 0), returns player2, and vice versa
+Player& Game::getOtherPlayer() {
+    return currentPlayerIndex == 0 ? player2 : player1;
+}
+
