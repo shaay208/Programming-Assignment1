@@ -12,10 +12,7 @@ public:
     std::string str() const override;
 
     // Returns a description of the Kraken's special ability 
-    std::string getAbilityDescription() const override;
-
-    // Determines whether this card can be played on top of another card
-    bool canPlayOn(const CardPtr& other) const override;
+   void displayAbilityDescription() const override;
 
     // Executes the Kraken's special ability, modifying the game state
     void executeAbility(Game& game, Player& player) override;

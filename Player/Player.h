@@ -5,16 +5,18 @@
 #include <vector>
 #include <memory>
 #include "../CardCollection/CardCollection.h"
+#include "../PlayArea/PlayArea.h"
 
 class Game;
 
 class Player {
 private:
-    // The name of the player
+    // The name of the player, used to identify the player throughout the game
     std::string name;
 
-    // The collection of cards currently played by the player
-    CardCollection playArea;
+    // The play area where cards are placed during gameplay
+    PlayArea playArea;
+
 
     // The player's bank where cards are stored for scoring
     Bank bank;
@@ -23,7 +25,10 @@ private:
     CardCollection hand;
 
     // Flag indicating if the player has busted (exceeded a score limit)
-    bool busted;
+    bool busted;  
+
+    // Update the bust status based on the current play area (whether the player has busted)
+    void checkBust();
 
 public:
     // Constructor: Initializes the player with a name
@@ -40,7 +45,7 @@ public:
     bool hasBusted() const { return busted; }
 
     // Gets the play area (cards played by the player)
-    const CardCollection& getPlayArea() const { return playArea; }
+    const PlayArea& getPlayArea() const;
 
     // Bank operations
     // Moves all cards from the play area to the player's bank
@@ -100,10 +105,12 @@ public:
     // Displays the cards currently in the player's bank
     void displayBank() const;
 
-private:
     // Check if adding a card would cause a bust (score exceeding limit or game rule violation)
-    bool wouldBust(const CardPtr& card) const;
+    bool wouldBust(const std::shared_ptr<Card>& card) const;
 
-    // Update the bust status based on the current play area (whether the player has busted)
-    void checkBust();
+    // Gets a reference to the play area (modifiable)
+    PlayArea& getPlayArea();
+    
+    // Displays the cards currently in the play area
+    void displayPlayArea() const;
 };

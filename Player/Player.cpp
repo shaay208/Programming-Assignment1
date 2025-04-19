@@ -102,18 +102,13 @@ void Player::print() const {
     std::cout << "Score: " << getScore() << "\n";
 }
 
-bool Player::wouldBust(const CardPtr& card) const {
-    // Creates a temporary play area with the new card
-    CardCollection tempPlayArea = playArea;
-    tempPlayArea.addCard(card);
-
-    // Checks if adding the card would cause a bust
-    for (const auto& c : tempPlayArea.getCards()) {
-        if (c->wouldCauseBust(tempPlayArea.getCards())) {
-            return true; // A bust would occur with this card
-        }
-    }
-    return false; // No bust would occur
+// Checks if adding the given card would cause a bust by having matching card types
+bool Player::wouldBust(const std::shared_ptr<Card>& card) const {
+    const auto& cards = playArea.getCards();
+    return std::any_of(cards.begin(), cards.end(),
+        [&card](const std::shared_ptr<Card>& existingCard) {
+            return existingCard->getType() == card->getType();
+        });
 }
 
 void Player::checkBust() {
@@ -131,4 +126,20 @@ void Player::displayBank() const {
     // Displays the cards in the player's bank along with their score
     std::cout << name << "'s bank (Score: " << getScore() << "): ";
     bank.print();
+}
+
+// Returns a reference to the player's play area
+PlayArea& Player::getPlayArea() {
+    return playArea;
+}
+
+// Returns a const reference to the player's play area
+const PlayArea& Player::getPlayArea() const {
+    return playArea;
+}
+
+// Displays the cards in the player's play area
+void Player::displayPlayArea() const {
+    std::cout << "\n" << name << "'s Play Area:\n";
+    playArea.print();
 }

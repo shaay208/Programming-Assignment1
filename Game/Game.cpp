@@ -77,13 +77,8 @@ void Game::playTurn() {
 }
 
 // Player attempts to draw a card and play it
-bool Game::drawCard() {
-    auto& currentPlayer = getCurrentPlayer();
-    if (auto card = deck.drawCard()) {
-        // Returns false if the playCard() caused a bust
-        return !currentPlayer.playCard(card);
-    }
-    return false;
+std::shared_ptr<Card> Game::drawCard() {
+    return deck.drawCard();
 }
 
 // Moves all cards from the player's play area to their bank

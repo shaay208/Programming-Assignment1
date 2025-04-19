@@ -79,11 +79,12 @@ public:
     // Method to move to the next turn
     void nextTurn();
 
-    // Method to check if the game is over
+    // Returns true if the game has reached its end condition (MAX_ROUNDS or MAX_TURNS)
     bool isGameOver() const;
 
-    // Method for the player to draw a card (returns false if the player busts)
-    bool drawCard();
+    // Draws and returns the top card from the deck as a shared pointer
+    std::shared_ptr<Card> drawCard();
+
 
     // Method to bank the current player's cards
     void bankCards();
