@@ -142,4 +142,7 @@ public:
 
     // Draws and returns the top card from the discard pile
     std::shared_ptr<Card> drawFromDiscardPile();
+
+     // Method to look at the top card of the deck without removing it
+     std::shared_ptr<Card> peekTopCard() const;
 };

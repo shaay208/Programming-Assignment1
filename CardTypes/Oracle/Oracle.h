@@ -19,8 +19,5 @@ public:
     void executeAbility(Game& game, Player& player) override;
 
     // Returns a string explaining the card's ability (for UI/help)
-    std::string getAbilityDescription() const override;
-
-    // Defines the rule for when this card can be played on another card
-    bool canPlayOn(const CardPtr& other) const override;
+    void displayAbilityDescription() const override;
 };

@@ -181,3 +181,8 @@ Player& Game::getOtherPlayer() {
 std::shared_ptr<Card> Game::drawFromDiscardPile() {
     return discardPile.drawCard();
 }
+
+// Returns a shared pointer to the top card of the deck without removing it
+std::shared_ptr<Card> Game::peekTopCard() const {
+    return deck.peekTop();
+}
