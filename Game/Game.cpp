@@ -70,7 +70,7 @@ void Game::playTurn() {
         std::cout << currentPlayer.getName() << " draws a " << drawnCard->str() << "\n";
         drawnCard->displayAbilityDescription();
 
-        if (currentPlayer.playCard(drawnCard, *this)) {
+        if (currentPlayer.playCard(drawnCard.get(), *this)) {
             // Player busted
             break;
         }
@@ -149,10 +149,12 @@ void Game::handleChestKeyCombo(Player& player) {
     }
 
     if (hasChest && hasKey) {
-        int cardsToBank = player.getPlayArea().size();
+        // Change int to size_t for cardsToBank
+        size_t cardsToBank = player.getPlayArea().size();
         std::cout << "\nChest and Key combination! Drawing " << cardsToBank
             << " cards from discard pile.\n";
-        for (int i = 0; i < cardsToBank; i++) {
+        // Change int to size_t for loop counter
+        for (size_t i = 0; i < cardsToBank; i++) {
             if (auto card = discardPile.drawCard()) {
                 player.getBank().addCard(card);
             }

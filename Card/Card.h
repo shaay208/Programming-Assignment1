@@ -31,7 +31,7 @@ public:
     virtual std::string str() const;
 
     // Accessors
-    CardType getType() const;
+    CardType getType() const { return type; }
     int getValue() const;
 
     // Bust checking

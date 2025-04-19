@@ -61,7 +61,7 @@ void Map::executeAbility(Game& game, Player& player) {
             player.getPlayArea().clear(); // Use getPlayArea().clear() instead of clearPlayArea()
             game.addToDiscardPile(chosenCard);
         } else {
-            player.playCard(chosenCard, game); // Add game parameter to playCard
+            player.playCard(chosenCard.get(), game); // Convert shared_ptr to raw pointer
         }
     }
 }

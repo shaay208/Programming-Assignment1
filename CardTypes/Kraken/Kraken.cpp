@@ -35,11 +35,12 @@ void Kraken::executeAbility(Game& game, Player& player) {
                 game.addToDiscardPile(card);
             }
             game.addToDiscardPile(drawnCard);
-            player.getPlayArea().clear();  // Clear play area after discarding
+            player.getPlayArea().clear();
             break;
         }
         
-        player.playCard(drawnCard, game);  // Pass game reference to playCard
+        // Convert shared_ptr to raw pointer for playCard
+        player.playCard(drawnCard.get(), game);
         
         std::cout << player.getName() << "'s Play Area:\n";
         player.displayPlayArea();

@@ -24,8 +24,9 @@ private:
     // Flag indicating if the player has busted (exceeded a score limit)
     bool busted;  
 
-    // Array of preset player names
-    static const std::string names[10];
+    // Array of preset player names that can be used to automatically assign names to players
+    static std::string names[];
+
 
     // Update the bust status based on the current play area (whether the player has busted)
     void checkBust();
@@ -36,7 +37,7 @@ public:
 
     // Play area management
     // Plays a card from the player's hand to the play area
-    bool playCard(std::shared_ptr<Card> card, Game& game);
+    bool playCard(Card* card, Game& game);
 
     // Checks if the player has busted
     bool hasBusted() const;

@@ -4,18 +4,20 @@
 #include <cstdlib>
 #include <ctime>
 #include <algorithm>
+#include <cstdlib>  // for rand()
 
 
-// Array of possible player names
-const std::string Player::names[10] = {
-    "Sam", "Billy", "Jen", "Bob", "Sally",
-    "Joe", "Sue", "Sasha", "Tina", "Marge"
-};
+// Define the static array
+std::string Player::names[] = {"Sam", "Billy", "Jen", "Bob", "Sally", "Joe", "Sue", "Sasha", "Tina", "Marge"};
 
-// Constructor that randomly assigns a name from the names array
-Player::Player(const std::string& playerName) : name(playerName), busted(false) {
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    name = names[std::rand() % 10];
+// Constructor that assigns a name based on input or randomly from the names array
+Player::Player(const std::string& playerName) {
+    if (playerName.empty()) {
+        name = names[rand() % 10];
+    } else {
+        name = playerName;
+    }
+    busted = false;
 }
 
 const std::string& Player::getName() const {
@@ -54,22 +56,18 @@ bool Player::hasBusted() const {
 }
 
 // Attempts to play a card from the player's hand to their play area, returns true if player busts
-bool Player::playCard(std::shared_ptr<Card> card, Game& game) {
-    if (wouldBust(card)) {
-        busted = true;
-        std::cout << "BUST! " << name << " loses all cards in play area.\n";
-        auto cards = playArea.getCards();
-        for (const auto& c : cards) {
-            game.addToDiscardPile(c);
-        }
-        playArea.clear();
-        game.addToDiscardPile(card);
+bool Player::playCard(Card* card, Game& game) {
+    if (!card) return false;
+    
+    // Convert raw pointer to shared_ptr before adding to play area
+    auto sharedCard = std::shared_ptr<Card>(card);
+    playArea.addCard(sharedCard);
+    
+    if (hasBusted()) {
         return true;
     }
-
-    playArea.addCard(card);
-    std::cout << name << " plays " << card->str() << "\n";
-    card->executeAbility(game, *this);  // Execute card's ability
+    
+    card->executeAbility(game, *this);
     return false;
 }
 

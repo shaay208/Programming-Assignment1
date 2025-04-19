@@ -25,10 +25,6 @@ std::string Card::str() const {
     return ss.str();
 }
 
-CardType Card::getType() const {
-    return type;
-}
-
 int Card::getValue() const {
     return value;
 }

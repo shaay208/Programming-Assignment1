@@ -4,28 +4,28 @@
 
 enum class CardType {
     CANNON,
-    CHEST,
-    KEY,
-    SWORD,
-    HOOK,
-    ORACLE,
-    MAP,
     MERMAID,
-    KRAKEN
+    SWORD,
+    CHEST,
+    MAP,
+    HOOK,
+    KRAKEN,
+    ORACLE,
+    KEY
 };
 
 inline std::string cardTypeToString(CardType type) {
     switch (type) {
-        case CardType::CANNON:  return "Cannon";
-        case CardType::CHEST:   return "Chest";
-        case CardType::KEY:     return "Key";
-        case CardType::SWORD:   return "Sword";
-        case CardType::HOOK:    return "Hook";
-        case CardType::ORACLE:  return "Oracle";
-        case CardType::MAP:     return "Map";
+        case CardType::CANNON: return "Cannon";
         case CardType::MERMAID: return "Mermaid";
-        case CardType::KRAKEN:  return "Kraken";
-        default:               return "Unknown";
+        case CardType::SWORD: return "Sword";
+        case CardType::CHEST: return "Chest";
+        case CardType::MAP: return "Map";
+        case CardType::HOOK: return "Hook";
+        case CardType::KRAKEN: return "Kraken";
+        case CardType::ORACLE: return "Oracle";
+        case CardType::KEY: return "Key";
+        default: return "Unknown";
     }
 }
 
