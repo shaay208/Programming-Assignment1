@@ -5,74 +5,75 @@
 
 Sword::Sword(int value) : Card(CardType::SWORD, value) {}
 
+
+// Returns a string representation of the Sword card
 std::string Sword::str() const {
     return "Sword(" + std::to_string(value) + ")";
 }
 
+// execute the card ability
 void Sword::executeAbility(Game& game, Player& player) {
-    // Identify the opponent (assuming a 2-player game)
-    auto& players = game.getPlayers();
-    auto opponent = (players[0].get() == &player) ? players[1] : players[0];
-
-    // Access the opponent's bank of cards
-    const auto& opponentBank = opponent->getBank();
+    Player& opponent = game.getOtherPlayer();
+    const auto& opponentBank = opponent.getBank();
+    
     if (opponentBank.isEmpty()) {
-        std::cout << "No cards in opponent's Bank. Play continues.\n";
+        std::cout << "        No cards in other player's Bank. Play continues.\n";
         return;
     }
 
-    // Display the opponent's bank so the player can view available cards
-    std::cout << "Opponent's bank:\n";
-    opponent->displayBank();
-
-    // Collect all unique card suits (types) from the opponent's bank
+    // Display opponent's bank
+    std::cout << "\nOther player's Bank:\n";
+    opponent.displayBank();
+    
+    // Get available suits from opponent's bank
+    std::cout << "\nChoose a suit to steal from (enter number):\n";
     std::vector<CardType> availableSuits;
-    for (const auto& card : opponentBank.getCards()) {
-        if (std::find_if(availableSuits.begin(), availableSuits.end(),
-            [&card](CardType suit) { return suit == card->getType(); }) == availableSuits.end()) {
+    const auto& bankCards = opponentBank.getCards().getCards();
+    
+    // Collect unique suits
+    for (const auto& card : bankCards) {
+        if (std::find(availableSuits.begin(), availableSuits.end(), 
+            card->getType()) == availableSuits.end()) {
             availableSuits.push_back(card->getType());
         }
     }
-
-    // Ask the player to choose a suit to steal from
-    std::cout << "Choose a suit to steal (0-" << availableSuits.size() - 1 << "):\n";
+    
+    // Display available suits
     for (size_t i = 0; i < availableSuits.size(); ++i) {
-        std::cout << i << ": " << static_cast<int>(availableSuits[i]) << "\n";
+        std::cout << i << ": " << cardTypeToString(availableSuits[i]) << "\n";
     }
-
+    
+    // Get player choice
     int choice;
     std::cin >> choice;
-    std::cin.ignore(); // Clear newline from input buffer
-
-    // If a valid suit is chosen
+    std::cin.ignore(); // Clear newline
+    
     if (choice >= 0 && choice < static_cast<int>(availableSuits.size())) {
         CardType chosenSuit = availableSuits[choice];
-
-        // Find the highest value card of the chosen suit in the opponent's bank
-        auto& bankCards = opponent->getBank().getCards();
-        auto highestCard = std::max_element(bankCards.begin(), bankCards.end(),
-            [chosenSuit](const auto& a, const auto& b) {
-                if (a->getType() == chosenSuit && b->getType() == chosenSuit) {
-                    return a->getValue() < b->getValue();
-                }
-                return a->getType() != chosenSuit;
-            });
-
-        // If a valid card was found, steal it and move it to the play area
-        if (highestCard != bankCards.end() && (*highestCard)->getType() == chosenSuit) {
-            std::cout << "Stealing " << (*highestCard)->str() << " from opponent's bank.\n";
-            auto stolenCard = *highestCard;
-            opponent->removeFromBank(stolenCard);
-            game.getPlayArea().addCard(stolenCard);
+        
+        // Find the highest value card of the chosen suit
+        CardPtr highestCard = nullptr;
+        int highestValue = -1;
+        
+        for (const auto& card : bankCards) {
+            if (card->getType() == chosenSuit && card->getValue() > highestValue) {
+                highestCard = card;
+                highestValue = card->getValue();
+            }
+        }
+        
+        if (highestCard) {
+            std::cout << "Stealing " << highestCard->str() 
+                      << " from other player's Bank.\n";
+            opponent.getBank().removeCard(highestCard);  // Use Bank's removeCard method
+            player.playCard(highestCard, game);  // Add game parameter to playCard
         }
     }
 }
 
-std::string Sword::getAbilityDescription() const {
-    return "Steal the top card of any suit from the other player's Bank into your Play Area.";
+// Describes the sword's ability for tooltips or help menus
+void Sword::displayAbilityDescription() const {
+    std::cout << "Steal the top card (i.e. the highest value) of any suit from "
+              << "the other player's Bank into your Play Area.\n";
 }
 
-bool Sword::canPlayOn(const std::shared_ptr<Card>& other) const {
-    // Can play if the other card is also a Sword and has a lower value
-    return other->getType() == CardType::SWORD && other->getValue() < value;
-}

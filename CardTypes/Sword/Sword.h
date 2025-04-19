@@ -5,20 +5,18 @@
 #include "../../Card/Card.h"
 
 // Sword class inherits from Card and represents a card with a stealing ability
+// Sword class derived from Card base class
 class Sword : public Card {
 public:
     // Constructor to initialize Sword with a specific value
     Sword(int value);
 
-    // Returns a string representation of the card
+    // Override: Returns string representation of the Sword card
     std::string str() const override;
 
-    // Executes the Sword card's ability (steal from opponent's bank)
+    // Override: Steals coins from opponent's bank and adds to player's bank
     void executeAbility(Game& game, Player& player) override;
 
-    // Describes the card's special ability
-    std::string getAbilityDescription() const override;
-
-    // Determines if this card can be played on another card
-    bool canPlayOn(const std::shared_ptr<Card>& other) const override;
+    // Override: Displays the description of the Sword card's stealing ability
+    void displayAbilityDescription() const override;
 };
