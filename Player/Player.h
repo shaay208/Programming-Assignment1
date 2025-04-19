@@ -31,7 +31,7 @@ public:
 
     // Play area management
     // Plays a card from the player's hand to the play area
-    bool playCard(const CardPtr& card);
+    bool playCard(std::shared_ptr<Card> card, Game& game);
 
     // Clears all cards from the play area
     void clearPlayArea();

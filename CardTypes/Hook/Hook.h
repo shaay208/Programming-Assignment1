@@ -14,10 +14,8 @@ public:
 
     // Provides a description of the card's special ability
     // Useful for tooltips, logs, or instructional display
-    std::string getAbilityDescription() const override;
+    void displayAbilityDescription() const override;
 
-    // Determines whether this card can be played on top of another card
-    bool canPlayOn(const CardPtr& other) const override;
 
     // Executes the card's ability when played
     // Non-const because it may alter game state (e.g., move cards)

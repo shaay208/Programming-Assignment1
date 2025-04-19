@@ -50,19 +50,24 @@ void Player::clearBank() {
     bank.clear();
 }
 
-bool Player::playCard(const CardPtr& card) {
-    // Checks if playing the card would cause the player to bust
+bool Player::playCard(std::shared_ptr<Card> card, Game& game) {
     if (wouldBust(card)) {
         busted = true;
-        return true; // Card can't be played as it causes a bust
+        std::cout << "BUST! " << name << " loses all cards in play area.\n";
+        auto cards = playArea.getCards();
+        for (const auto& c : cards) {
+            game.addToDiscardPile(c);
+        }
+        playArea.clear();
+        game.addToDiscardPile(card);
+        return true;
     }
-
-    // Adds the card to the player's play area and removes it from the hand
+    
     playArea.addCard(card);
-    removeFromHand(card);
-    return false; // Card successfully played
+    std::cout << name << " plays " << card->str() << "\n";
+    card->executeAbility(game, *this);  // Execute card's ability
+    return false;
 }
-
 void Player::clearPlayArea() {
     // Clears all cards from the player's play area and resets bust status
     playArea.clear();

@@ -15,66 +15,62 @@ std::string Hook::str() const {
 
 // Ability of the Hook card: play the top card of any suit from your Bank into your play area
 void Hook::executeAbility(Game& game, Player& player) {
-    // Get the player's bank cards
-    const auto& playerBank = player.getBank().getCards();
-
-    // If the player's bank is empty, there's no card to play
-    if (playerBank.isEmpty()) {
-        std::cout << "No cards in your bank to play." << std::endl;
+    const auto& bank = player.getBank();
+    if (bank.isEmpty()) {
+        std::cout << "        No cards in your Bank. Play continues.\n";
         return;
     }
 
-    // Display a list of highest-value cards by suit
-    std::cout << "Select the top card from any suit in your Bank to play into your play area:" << std::endl;
-
-    // Map to store the highest-value card for each CardType (suit)
-    std::map<CardType, CardPtr> highestCards;
-    int optionNumber = 1;
-
-    // Loop through the player's bank to find the top card of each type
-    for (const auto& card : playerBank) {
-        CardType type = card->getType();
-
-        // Replace only if this is the first of its type or has a higher value than existing
-        if (highestCards.find(type) == highestCards.end() ||
-            card->getValue() > highestCards[type]->getValue()) {
-            highestCards[type] = card;
+    // Display player's bank
+    std::cout << "\nYour Bank:\n";
+    player.displayBank();
+    
+    // Get available suits from bank
+    std::vector<CardType> availableSuits;
+    const auto& bankCards = bank.getCards().getCards();
+    
+    // Collect unique suits
+    for (const auto& card : bankCards) {
+        if (std::find(availableSuits.begin(), availableSuits.end(), 
+            card->getType()) == availableSuits.end()) {
+            availableSuits.push_back(card->getType());
         }
     }
-
-    // Display the list of options to the player
-    for (const auto& [type, card] : highestCards) {
-        std::cout << "(" << optionNumber++ << ") " << card->str() << std::endl;
+    
+    // Display available suits
+    std::cout << "\nChoose a suit to play from (enter number):\n";
+    for (size_t i = 0; i < availableSuits.size(); ++i) {
+        std::cout << i << ": " << cardTypeToString(availableSuits[i]) << "\n";
     }
-
-    // Prompt player to select a card to play
+    
+    // Get player choice
     int choice;
-    std::cout << "Which card do you pick? ";
     std::cin >> choice;
+    std::cin.ignore(); // Clear newline
 
-    // Clamp input to a valid range to avoid crashes
-    choice = std::clamp(choice, 1, static_cast<int>(highestCards.size()));
-
-    // Get the chosen card based on the player's input
-    auto it = highestCards.begin();
-    std::advance(it, choice - 1);
-    CardPtr chosenCard = it->second;
-
-    // Remove the selected card from player's bank
-    player.removeFromBank(chosenCard);
-
-    // Add the chosen card to player's play area
-    player.playCard(chosenCard);
-
-    std::cout << "Played " << chosenCard->str() << " into your play area." << std::endl;
+    if (choice >= 0 && choice < static_cast<int>(availableSuits.size())) {
+        CardType chosenSuit = availableSuits[choice];
+        
+        // Find the highest value card of the chosen suit
+        CardPtr highestCard = nullptr;
+        int highestValue = -1;
+        
+        for (const auto& card : bankCards) {
+            if (card->getType() == chosenSuit && card->getValue() > highestValue) {
+                highestCard = card;
+                highestValue = card->getValue();
+            }
+        }
+        
+        if (highestCard) {
+            std::cout << "Playing " << highestCard->str() << " from your Bank.\n";
+            player.getBank().removeCard(highestCard);  // Use Bank's removeCard method
+            player.playCard(highestCard, game);  // Add game parameter to playCard
+        }
+    }
 }
 
 // Returns a description of the Hook's ability
-std::string Hook::getAbilityDescription() const {
-    return "Play the top card of any suit from your Bank into your play area. You must select one card.";
-}
-
-// Hook cards can be played on other Hook cards with a lower value
-bool Hook::canPlayOn(const CardPtr& other) const {
-    return other && other->getType() == CardType::HOOK && other->getValue() < getValue();
+void Hook::displayAbilityDescription() const {
+    std::cout << "        Play the top card (i.e. the highest value) of any suit from your Bank into your play area.\n";
 }
