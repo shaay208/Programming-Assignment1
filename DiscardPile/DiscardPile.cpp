@@ -46,3 +46,9 @@ void DiscardPile::print() const {
 const CardCollection& DiscardPile::getCards() const {
     return cards;
 }
+
+
+// Clears all cards from the discard pile
+void DiscardPile::clear() {
+    cards.clear();
+}
