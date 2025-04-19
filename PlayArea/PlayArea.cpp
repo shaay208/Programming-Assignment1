@@ -1,60 +1,49 @@
 #include "PlayArea.h"
 #include <iostream>
-#include <algorithm>
 
-// Adds a card to the play area if the provided card pointer is not null
+// Adds a card to the play area if the card pointer is valid
 void PlayArea::addCard(const std::shared_ptr<Card>& card) {
     if (card) {
         cards.addCard(card);
     }
 }
 
-// Removes a card from the play area if it exists
+// Removes a specified card from the play area
 void PlayArea::removeCard(const std::shared_ptr<Card>& card) {
     cards.removeCard(card);
 }
 
-// Clears all cards from the play area
+// Removes all cards from the play area
 void PlayArea::clear() {
     cards.clear();
 }
 
-// Returns a card at the specified index, or nullptr if index is out of bounds
-CardPtr CardCollection::getCard(size_t index) const {
-    if (index < cards.size()) {
-        return cards[index];
-    }
-    return nullptr;
+// Checks if the play area has no cards
+bool PlayArea::isEmpty() const {
+    return cards.isEmpty();
 }
 
-// Finds and returns the first card of the specified suit, or nullptr if not found
-CardPtr CardCollection::findOneCardOfSuit(CardType suit) const {
-    auto it = std::find_if(cards.begin(), cards.end(),
-        [suit](const CardPtr& card) {
-            return card->getType() == suit;
-        });
-    
-    return (it != cards.end()) ? *it : nullptr;
-}
-
-// Checks if the card collection is empty
-bool CardCollection::isEmpty() const {
-    return cards.empty();
-}
-
-// Returns the number of cards in the collection
-size_t CardCollection::size() const {
+// Returns the number of cards in the play area
+size_t PlayArea::size() const {
     return cards.size();
 }
 
-// Prints all cards in the collection, showing "(empty)" if there are no cards
-void CardCollection::print() const {
-    if (cards.empty()) {
+// Returns a const reference to the card collection
+const CardCollection& PlayArea::getCards() const {
+    return cards;
+}
+
+// Returns a modifiable reference to the vector of card pointers
+std::vector<CardPtr>& PlayArea::getCards() {
+    return cards.getCards();
+}
+
+// Prints the cards in the play area or "(empty)" if no cards exist
+void PlayArea::print() const {
+    if (cards.isEmpty()) {
         std::cout << "        (empty)\n";
         return;
     }
 
-    for (const auto& card : cards) {
-        std::cout << "        " << card->str() << "\n";
-    }
+    cards.print();
 }

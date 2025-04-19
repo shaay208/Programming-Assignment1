@@ -1,9 +1,6 @@
 #pragma once
-
-#include <vector>
-#include <memory>
-#include "../Card/Card.h"
 #include "../CardCollection/CardCollection.h"
+#include <memory>
 
 // Class representing the play area where cards are placed during the game
 class PlayArea {
@@ -25,17 +22,17 @@ public:
 
     // Query methods for play area state
     // Checks if play area has no cards
-    bool isEmpty() const;  
+    bool isEmpty() const;
 
     // Returns the total number of cards in play area
-    size_t size() const;  
+    size_t size() const;
 
      // Gets constant reference to card collection
-    const CardCollection& getCards() const; 
+    const CardCollection& getCards() const;
     
     // Gets modifiable reference to card collection
-    std::vector<CardPtr>& getCards();  
-    
+    std::vector<CardPtr>& getCards();
+
     // Output method
     void print() const;  // Displays the current state of play area
 };

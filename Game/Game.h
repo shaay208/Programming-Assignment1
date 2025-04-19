@@ -70,8 +70,6 @@ public:
     // Method to play a single turn for the current player
     void playTurn();
 
-   Player& getCurrentPlayer();
-
     // Returns true if the game has reached its end condition (MAX_ROUNDS or MAX_TURNS)
     bool isGameOver() const;
 
@@ -97,4 +95,6 @@ public:
 
     // Method to look at the top card of the deck without removing it
     std::shared_ptr<Card> peekTopCard() const;
+
+    Player& getCurrentPlayer();
 };

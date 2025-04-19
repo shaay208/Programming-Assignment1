@@ -52,3 +52,7 @@ const CardCollection& DiscardPile::getCards() const {
 void DiscardPile::clear() {
     cards.clear();
 }
+
+bool DiscardPile::isEmpty() const {
+    return cards.isEmpty();
+}

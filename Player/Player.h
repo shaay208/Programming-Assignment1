@@ -6,6 +6,7 @@
 #include <memory>
 #include "../CardCollection/CardCollection.h"
 #include "../PlayArea/PlayArea.h"
+#include "../DiscardPile/DiscardPile.h"
 
 class Game;
 
@@ -72,5 +73,5 @@ public:
     int getScore() const;
 
     // Displays the cards in the play area  
-    void displayPlayArea() const;  
+    void displayPlayArea() const;
 };

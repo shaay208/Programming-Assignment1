@@ -37,7 +37,7 @@ public:
     CardCollection& getCards();
 
     // Returns a const reference to the cards
-    const CardCollection& getCards() const;const CardCollection& getCards() const;
+    const CardCollection& getCards() const;
 
     // Prints the contents and score of the bank
     void print() const;

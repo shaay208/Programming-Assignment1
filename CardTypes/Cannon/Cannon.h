@@ -6,8 +6,6 @@
 // Cannon class represents a special type of card with a unique ability
 class Cannon : public Card {
 public:
-    // Constructor: creates a Cannon card with a specified value
-    Cannon(int value);
 
     // Explicit constructor to prevent implicit conversions
     explicit Cannon(int value);
