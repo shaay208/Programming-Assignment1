@@ -17,32 +17,28 @@ private:
     // The play area where cards are placed during gameplay
     PlayArea playArea;
 
-
     // The player's bank where cards are stored for scoring
     Bank bank;
 
-    // The collection of cards currently in the player's hand
-    CardCollection hand;
-
     // Flag indicating if the player has busted (exceeded a score limit)
     bool busted;  
+
+    // Array of preset player names
+    static const std::string names[10];
 
     // Update the bust status based on the current play area (whether the player has busted)
     void checkBust();
 
 public:
     // Constructor: Initializes the player with a name
-    explicit Player(const std::string& name);
+    explicit Player(const std::string& playerName = "");
 
     // Play area management
     // Plays a card from the player's hand to the play area
     bool playCard(std::shared_ptr<Card> card, Game& game);
 
-    // Clears all cards from the play area
-    void clearPlayArea();
-
     // Checks if the player has busted
-    bool hasBusted() const { return busted; }
+    bool hasBusted() const;
 
     // Gets the play area (cards played by the player)
     const PlayArea& getPlayArea() const;
@@ -51,66 +47,30 @@ public:
     // Moves all cards from the play area to the player's bank
     void movePlayAreaToBank();
 
-    // Removes a specific card from the player's bank
-    void removeFromBank(const CardPtr& card);
+    // Gets a const reference to the player's bank, allowing read-only access to bank contents
+    const Bank& getBank() const;
 
-    // Gets the total score from the bank's cards
-    int getScore() const { return bank.getScore(); }
+    // Gets a non-const reference to the player's bank, allowing modification of bank contents
+    Bank& getBank();
 
-    // Gets a constant reference to the player's bank
-    const Bank& getBankConst() const { return bank; }
-
-    // Gets a reference to the player's bank (modifiable)
-    Bank& getBank() { return bank; }
-
-    // Hand management
-    // Adds a card to the player's hand
-    void addCardToHand(const CardPtr& card);
-
-    // Removes a specific card from the player's hand
-    void removeFromHand(const CardPtr& card);
-
-    // Gets the current hand of the player
-    const CardCollection& getHand() const { return hand; }
-
-    // Getters
     // Gets the name of the player
-    const std::string& getName() const { return name; }
+    const std::string& getName() const;
 
-    // Utility
-    // Prints a summary of the player's status
-    void print() const;
+    // Display functions
+    void displayBank() const;  // Shows bank
 
-    // Card management
-    // Adds a card to the player's hand (shared_ptr version)
-    void addToHand(std::shared_ptr<Card> card);
-
-    // Adds a card to the player's bank (shared_ptr version)
-    void addToBank(std::shared_ptr<Card> card);
-
-    // Clears all cards from the player's hand
-    void clearHand();
-
-    // Clears all cards from the player's bank
-    void clearBank();
-
-    // Game actions
-    // Calculates the player's score based on cards in the bank
-    void calculateScore();
-
-    // Display
-    // Displays the cards currently in the player's hand
-    void displayHand() const;
-
-    // Displays the cards currently in the player's bank
-    void displayBank() const;
-
-    // Check if adding a card would cause a bust (score exceeding limit or game rule violation)
-    bool wouldBust(const std::shared_ptr<Card>& card) const;
-
-    // Gets a reference to the play area (modifiable)
-    PlayArea& getPlayArea();
+    // Game logic functions
+    // Checks if card would cause bust
+    bool wouldBust(const std::shared_ptr<Card>& card) const; 
     
-    // Displays the cards currently in the play area
-    void displayPlayArea() const;
+    PlayArea& getPlayArea();  // Gets modifiable play area
+
+    // Handles busting by moving cards to discard pile
+    void bustPlayArea(DiscardPile& discardPile);
+
+    // Gets the player's score based on cards in the bank
+    int getScore() const;
+
+    // Displays the cards in the play area  
+    void displayPlayArea() const;  
 };
