@@ -13,29 +13,22 @@ public:
     ~DiscardPile() = default;
 
     // Adds a single card to the discard pile
-    void addCard(std::shared_ptr<Card> card);
+   void addCard(const std::shared_ptr<Card>& card);
 
-    // Adds multiple cards to the discard pile
-    void addCards(const CardCollection& cards);
+    // Adds a vector of cards to the discard pile at once
+    void addCards(const std::vector<std::shared_ptr<Card>>& cardsToAdd);
 
-    // Draws a specified number of cards from the discard pile
-    CardCollection drawCards(int count);
-
-    // Finds one card of a specific suit from the discard pile (returns first match)
-    std::shared_ptr<Card> findOneCardOfSuit(CardType suit) const;
-
-    // Removes a specific card from the discard pile
-    bool removeCard(const std::shared_ptr<Card>& card);
-
+    // Removes and returns the top card from the discard pile
+    std::shared_ptr<Card> drawCard();
+    
     // Checks whether the discard pile is empty
     bool isEmpty() const;
 
     // Prints all cards in the discard pile
     void print() const;
 
-    // Returns a modifiable reference to the card collection
-    CardCollection& getCards();
-
     // Returns a constant reference to the card collection
     const CardCollection& getCards() const;
+
+    void clear(); 
 };
