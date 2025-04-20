@@ -58,8 +58,9 @@ void Map::executeAbility(Game& game, Player& player) {
             for (const auto& card : playAreaCards) {
                 game.addToDiscardPile(card);
             }
-            player.getPlayArea().clear(); // Use getPlayArea().clear() instead of clearPlayArea()
+            player.getPlayArea().clear();
             game.addToDiscardPile(chosenCard);
+            game.nextTurn();  // Move to next player immediately
         } else {
             player.playCard(chosenCard, game); // Convert shared_ptr to raw pointer
         }

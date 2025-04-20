@@ -73,13 +73,16 @@ void Game::playTurn() {
         std::cout << currentPlayer.getName() << " draws a " << drawnCard->str() << "\n";
         drawnCard->displayAbilityDescription();
 
-        // Create a local copy of the card pointer before playing
         auto cardPtr = drawnCard;
         if (currentPlayer.playCard(cardPtr, *this)) {
-            // Player busted - ensure proper cleanup
+            // Player busted - move to next player immediately
             addToDiscardPile(cardPtr);
-            break;
+            nextTurn();  // Call nextTurn directly when busting
+            return;      // Exit the turn immediately
         }
+
+        // Add this line to display play area after each draw
+        currentPlayer.displayPlayArea();
 
         if (cardPtr->getType() != CardType::KRAKEN) {
             std::string input;
@@ -116,13 +119,14 @@ void Game::nextTurn() {
     // Advance to next player
     currentPlayerIndex = (currentPlayerIndex + 1) % 2;
     
-    // Update round/turn counters
+    // Update round/turn counters based on the pattern shown in your game
     if (currentPlayerIndex == 0) {
+        // When returning to first player, start new round
+        currentRound++;
+        currentTurn = 1;
+    } else {
+        // When moving to second player, increment turn
         currentTurn++;
-        if (currentTurn > 2) {
-            currentRound++;
-            currentTurn = 1;
-        }
     }
 
     // Check deck state

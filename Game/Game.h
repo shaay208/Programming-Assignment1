@@ -44,9 +44,7 @@ private:
 
     Game();
 
-    // Advances the game to the next turn
-    void nextTurn();
-
+   
     // Handles the chest and key card combination for a player
     void handleChestKeyCombo(Player& player);
     
@@ -54,6 +52,10 @@ private:
     void displayTitle() const;
 
 public:
+
+    // Advances the game to the next turn
+    void nextTurn();
+
 
     // Singleton access
     static Game& getInstance();
