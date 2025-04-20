@@ -75,4 +75,7 @@ public:
 
     // Displays the cards in the play area  
     void displayPlayArea() const;
+
+    // Resets the busted state of the player
+    void resetBustedState() { busted = false; }
 };

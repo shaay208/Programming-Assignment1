@@ -10,7 +10,9 @@ void PlayArea::addCard(const std::shared_ptr<Card>& card) {
 
 // Removes a specified card from the play area
 void PlayArea::removeCard(const std::shared_ptr<Card>& card) {
-    cards.removeCard(card);
+    if (card) {
+        cards.removeCard(card);
+    }
 }
 
 // Removes all cards from the play area

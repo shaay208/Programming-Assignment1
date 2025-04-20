@@ -59,14 +59,23 @@ bool Player::hasBusted() const {
 bool Player::playCard(Card* card, Game& game) {
     if (!card) return false;
     
-    // Convert raw pointer to shared_ptr before adding to play area
-    auto sharedCard = std::shared_ptr<Card>(card);
-    playArea.addCard(sharedCard);
+    // Create shared pointer without taking ownership
+    auto sharedCard = std::shared_ptr<Card>(card, [](Card*){});
     
-    if (hasBusted()) {
+    // Check for bust before adding card
+    if (wouldBust(sharedCard)) {
+        busted = true;
+        std::cout << "BUST! " << name << " loses all cards in play area.\n";
+        // Move cards to discard pile
+        const auto& cards = playArea.getCards();
+        for (const auto& c : cards) {
+            game.addToDiscardPile(c);
+        }
+        playArea.clear();
         return true;
     }
     
+    playArea.addCard(sharedCard);
     card->executeAbility(game, *this);
     return false;
 }

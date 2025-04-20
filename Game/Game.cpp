@@ -16,11 +16,14 @@ Game& Game::getInstance() {
 }
 
 // Constructor that initializes the game with the given number of players
-Game::Game() :
-    currentRound(1),
-    currentTurn(1),
-    currentPlayerIndex(0),
-    gameOver(false) {
+Game::Game() {
+    // Initialize players with random names from the predefined array
+    player1 = Player();  // Will pick random name from array
+    player2 = Player();  // Will pick random name from array
+    currentRound = 1;
+    currentTurn = 1;
+    currentPlayerIndex = 0;
+    gameOver = false;
 }
 
 // Initializes the game by resetting the deck and dealing cards
@@ -70,12 +73,15 @@ void Game::playTurn() {
         std::cout << currentPlayer.getName() << " draws a " << drawnCard->str() << "\n";
         drawnCard->displayAbilityDescription();
 
-        if (currentPlayer.playCard(drawnCard.get(), *this)) {
-            // Player busted
+        // Create a local copy of the card pointer before playing
+        auto cardPtr = drawnCard;
+        if (currentPlayer.playCard(cardPtr.get(), *this)) {
+            // Player busted - ensure proper cleanup
+            addToDiscardPile(cardPtr);
             break;
         }
 
-        if (drawnCard->getType() != CardType::KRAKEN) {
+        if (cardPtr->getType() != CardType::KRAKEN) {
             std::string input;
             do {
                 std::cout << "\nDraw again? (y/n): ";
@@ -84,7 +90,9 @@ void Game::playTurn() {
 
             if (input == "n") {
                 handleChestKeyCombo(currentPlayer);
-                currentPlayer.movePlayAreaToBank();
+                if (!currentPlayer.hasBusted()) {
+                    currentPlayer.movePlayAreaToBank();
+                }
                 break;
             }
         }
@@ -95,13 +103,31 @@ void Game::playTurn() {
 
 // Advances the game to the next player's turn, and handles round progression
 void Game::nextTurn() {
+    Player& currentPlayer = getCurrentPlayer();
+    
+    // Only move cards to bank if player hasn't busted
+    if (!currentPlayer.hasBusted()) {
+        currentPlayer.movePlayAreaToBank();
+    }
+    
+    // Reset player's busted state for next turn
+    currentPlayer.resetBustedState();
+    
+    // Advance to next player
     currentPlayerIndex = (currentPlayerIndex + 1) % 2;
+    
+    // Update round/turn counters
     if (currentPlayerIndex == 0) {
         currentTurn++;
         if (currentTurn > 2) {
             currentRound++;
             currentTurn = 1;
         }
+    }
+
+    // Check deck state
+    if (deck.isEmpty() && currentPlayerIndex == 0) {
+        gameOver = true;
     }
 }
 
