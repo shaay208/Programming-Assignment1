@@ -86,7 +86,6 @@ bool Player::playCard(std::shared_ptr<Card> card, Game& game) {
             game.addToDiscardPile(c);
         }
         playArea.clear();
-        game.nextTurn();  // Move to next player immediately
         return true;
     }
     

@@ -36,7 +36,6 @@ void Kraken::executeAbility(Game& game, Player& player) {
             }
             game.addToDiscardPile(drawnCard);
             player.getPlayArea().clear();
-            game.nextTurn();  // Move to next player immediately
             break;
         }
         

@@ -41,7 +41,6 @@ void Oracle::executeAbility(Game& game, Player& player) {
             }
             player.getPlayArea().clear();
             game.addToDiscardPile(drawnCard);
-            game.nextTurn();  // Move to next player immediately
         } else {
             player.playCard(drawnCard, game);
         }

@@ -58,7 +58,6 @@ void Game::playTurn() {
     Player& currentPlayer = getCurrentPlayer();
     std::cout << currentPlayer.getName() << "'s turn.\n";
 
-    std::cout << currentPlayer.getName() << "'s Bank:\n";
     currentPlayer.displayBank();
 
     bool continueTurn = true;
@@ -101,7 +100,10 @@ void Game::playTurn() {
         }
     }
 
-    nextTurn();
+    // Only call nextTurn if player hasn't busted (since it was already called in bust case)
+    if (!currentPlayer.hasBusted()) {
+        nextTurn();
+    }
 }
 
 // Advances the game to the next player's turn, and handles round progression
