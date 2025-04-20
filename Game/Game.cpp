@@ -110,11 +110,6 @@ void Game::playTurn() {
 void Game::nextTurn() {
     Player& currentPlayer = getCurrentPlayer();
     
-    // Only move cards to bank if player hasn't busted
-    if (!currentPlayer.hasBusted()) {
-        currentPlayer.movePlayAreaToBank();
-    }
-    
     // Reset player's busted state for next turn
     currentPlayer.resetBustedState();
     

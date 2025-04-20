@@ -36,7 +36,8 @@ void Kraken::executeAbility(Game& game, Player& player) {
             }
             game.addToDiscardPile(drawnCard);
             player.getPlayArea().clear();
-            break;
+            player.playCard(drawnCard, game);
+            return;
         }
         
         // Pass the shared_ptr directly

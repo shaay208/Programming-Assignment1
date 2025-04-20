@@ -41,6 +41,8 @@ void Oracle::executeAbility(Game& game, Player& player) {
             }
             player.getPlayArea().clear();
             game.addToDiscardPile(drawnCard);
+            player.playCard(drawnCard, game);
+            return;
         } else {
             player.playCard(drawnCard, game);
         }

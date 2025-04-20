@@ -60,6 +60,8 @@ void Map::executeAbility(Game& game, Player& player) {
             }
             player.getPlayArea().clear();
             game.addToDiscardPile(chosenCard);
+            player.playCard(chosenCard, game);
+            return;
         } else {
             player.playCard(chosenCard, game); // Convert shared_ptr to raw pointer
         }
