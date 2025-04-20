@@ -42,7 +42,7 @@ void Oracle::executeAbility(Game& game, Player& player) {
             player.getPlayArea().clear();
             game.addToDiscardPile(drawnCard);
         } else {
-            player.playCard(drawnCard.get(), game);
+            player.playCard(drawnCard, game);
             std::cout << player.getName() << "'s Play Area:\n";
             player.displayPlayArea();
         }

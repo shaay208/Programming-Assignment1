@@ -1,5 +1,6 @@
 #pragma once
-
+#include <memory>
+#include <vector>
 #include "../CardCollection/CardCollection.h"
 
 // Represents a pile where discarded cards are stored
@@ -12,6 +13,7 @@ public:
     DiscardPile() = default;
     ~DiscardPile() = default;
 
+    std::vector<std::shared_ptr<Card>> discardPile; 
     // Adds a single card to the discard pile
    void addCard(const std::shared_ptr<Card>& card);
 

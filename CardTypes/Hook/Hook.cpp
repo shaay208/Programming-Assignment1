@@ -65,7 +65,7 @@ void Hook::executeAbility(Game& game, Player& player) {
         if (highestCard) {
             std::cout << "Playing " << highestCard->str() << " from your Bank.\n";
             player.getBank().removeCard(highestCard);  // Use Bank's removeCard method
-            player.playCard(highestCard.get(), game);  // Add game parameter to playCard
+            player.playCard(highestCard, game);  // Add game parameter to playCard
         }
     }
 }

@@ -7,7 +7,7 @@
 #include "../CardCollection/CardCollection.h"
 #include "../PlayArea/PlayArea.h"
 #include "../DiscardPile/DiscardPile.h"
-
+#include <memory> 
 class Game;
 
 class Player {
@@ -37,7 +37,7 @@ public:
 
     // Play area management
     // Plays a card from the player's hand to the play area
-    bool playCard(Card* card, Game& game);
+    bool playCard(std::shared_ptr<Card> card, Game& game);
 
     // Checks if the player has busted
     bool hasBusted() const;

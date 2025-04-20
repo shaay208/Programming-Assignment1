@@ -75,7 +75,7 @@ void Game::playTurn() {
 
         // Create a local copy of the card pointer before playing
         auto cardPtr = drawnCard;
-        if (currentPlayer.playCard(cardPtr.get(), *this)) {
+        if (currentPlayer.playCard(cardPtr, *this)) {
             // Player busted - ensure proper cleanup
             addToDiscardPile(cardPtr);
             break;

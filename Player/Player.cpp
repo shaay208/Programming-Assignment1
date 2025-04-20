@@ -56,11 +56,12 @@ bool Player::hasBusted() const {
 }
 
 // Attempts to play a card from the player's hand to their play area, returns true if player busts
-bool Player::playCard(Card* card, Game& game) {
+bool Player::playCard(std::shared_ptr<Card> card, Game& game) {
     if (!card) return false;
     
     // Create shared pointer without taking ownership
-    auto sharedCard = std::shared_ptr<Card>(card, [](Card*){});
+    auto sharedCard = std::shared_ptr<Card>(card);  // No custom deleter needed
+
     
     // Check for bust before adding card
     if (wouldBust(sharedCard)) {

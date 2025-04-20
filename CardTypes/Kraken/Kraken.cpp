@@ -39,8 +39,8 @@ void Kraken::executeAbility(Game& game, Player& player) {
             break;
         }
         
-        // Convert shared_ptr to raw pointer for playCard
-        player.playCard(drawnCard.get(), game);
+        // Pass the shared_ptr directly
+        player.playCard(drawnCard, game);
         
         std::cout << player.getName() << "'s Play Area:\n";
         player.displayPlayArea();

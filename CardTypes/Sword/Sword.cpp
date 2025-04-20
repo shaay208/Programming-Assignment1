@@ -66,7 +66,7 @@ void Sword::executeAbility(Game& game, Player& player) {
             std::cout << "Stealing " << highestCard->str() 
                       << " from other player's Bank.\n";
             opponent.getBank().removeCard(highestCard);  // Use Bank's removeCard method
-            player.playCard(highestCard.get(), game);  // Add game parameter to playCard
+            player.playCard(highestCard, game);  // Add game parameter to playCard
         }
     }
 }

@@ -2,15 +2,17 @@
 #include "../Card/Card.h"
 #include "../CardCollection/CardCollection.h"
 #include <random>  // For shuffling functionality
+#include <memory>
+#include <vector>
 
 // Deck class inherits from CardCollection and represents a deck of cards
 // Deck class that inherits from CardCollection to manage a collection of playing cards
 class Deck : public CardCollection {
 private:
-    // Vector to store the cards in the deck using smart pointers
-    std::vector<std::shared_ptr<Card>> cards;
 
 public:
+
+    std::vector<std::shared_ptr<Card>> cards; // Use shared_ptr
 
     // Sets up the deck with a standard set of cards
     void initialize();
