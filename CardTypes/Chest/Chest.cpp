@@ -6,7 +6,7 @@
 Chest::Chest(int value) : Card(CardType::CHEST, value) {}
 
 void Chest::executeAbility(Game& game, Player& player) {
-    std::cout << "        No immediate effect. If banked with a key, draw as many bonus cards from the Discard pile as you moved into your Bank.\n";
+   
 }
 
 void Chest::displayAbilityDescription() const {

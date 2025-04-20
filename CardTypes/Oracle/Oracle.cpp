@@ -44,8 +44,6 @@ void Oracle::executeAbility(Game& game, Player& player) {
             game.nextTurn();  // Move to next player immediately
         } else {
             player.playCard(drawnCard, game);
-            std::cout << player.getName() << "'s Play Area:\n";
-            player.displayPlayArea();
         }
     } else {
         std::cout << "        Chose not to draw the card. Turn ends.\n";
