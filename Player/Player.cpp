@@ -9,11 +9,24 @@
 
 // Define the static array
 std::string Player::names[] = {"Sam", "Billy", "Jen", "Bob", "Sally", "Joe", "Sue", "Sasha", "Tina", "Marge"};
+// Track which names are used
+static bool namesUsed[10] = {false}; 
 
 // Constructor that assigns a name based on input or randomly from the names array
 Player::Player(const std::string& playerName) {
-    if (playerName.empty()) {
-        name = names[rand() % 10];
+  if (playerName.empty()) {
+        // Find first unused name
+        for (int i = 0; i < 10; i++) {
+            if (!namesUsed[i]) {
+                name = names[i];
+                namesUsed[i] = true;
+                break;
+            }
+        }
+        // If all names are used, create a numbered name
+        if (name.empty()) {
+            name = "Player" + std::to_string(rand() % 100);
+        }
     } else {
         name = playerName;
     }
