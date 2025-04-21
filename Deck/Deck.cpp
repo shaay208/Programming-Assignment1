@@ -10,6 +10,7 @@
 #include "../CardTypes/Kraken/Kraken.h"
 #include "../CardTypes/Oracle/Oracle.h"
 #include "../CardTypes/Key/Key.h"
+#include "../CardTypes/Anchor/Anchor.h"
 
 #include <algorithm>
 #include <random>
@@ -64,6 +65,11 @@ void Deck::initialize() {
     for (int i = 2; i <= 7; ++i) {
         cards.push_back(std::make_shared<Kraken>(i));
     }
+
+    // this is commented beacuse this change is braking the code run
+    // for (int i = 2; i <= 7; ++i) {
+    //     cards.push_back(std::make_shared<Anchor>(i));
+    // }
     // shuffle the deck after initializing
     shuffle();
 }

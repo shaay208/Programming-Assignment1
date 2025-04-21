@@ -11,7 +11,8 @@ enum class CardType {
     HOOK,
     KRAKEN,
     ORACLE,
-    KEY
+    KEY,
+    ANCHOR
 };
 
 inline std::string cardTypeToString(CardType type) {
@@ -25,6 +26,7 @@ inline std::string cardTypeToString(CardType type) {
         case CardType::KRAKEN: return "Kraken";
         case CardType::ORACLE: return "Oracle";
         case CardType::KEY: return "Key";
+        case CardType::ANCHOR: return "Anchor";
         default: return "Unknown";
     }
 }
